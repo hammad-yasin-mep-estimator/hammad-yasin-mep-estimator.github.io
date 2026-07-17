@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hammad Yasin — MEP Estimator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #0B1F3A;
+    --navy-light: #123156;
+    --blue: #1D4E89;
+    --paper: #F4F1E8;
+    --paper-line: #DCD6C4;
+    --ink: #16202B;
+    --ink-soft: #4A5568;
+    --amber: #E8963E;
+    --amber-dark: #C7752A;
+    --white: #FFFFFF;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+    background-size:32px 32px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--amber-dark);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--amber-dark);display:inline-block;}
+
+  /* NAV */
+  header.site-nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(244,241,232,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1.5px solid var(--ink);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:1080px; margin:0 auto;
+  }
+  .nav-mark{font-family:var(--mono); font-weight:700; font-size:15px; letter-spacing:0.05em;}
+  .nav-mark span{color:var(--amber-dark);}
+  .nav-links{display:flex; gap:28px; font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:0.06em;}
+  .nav-links a{position:relative; padding:4px 0; color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--amber);transition:width .25s ease;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-toggle{display:none;}
+
+  /* HERO — title block */
+  .hero{padding:64px 0 40px;}
+  .title-block{
+    border:1.5px solid var(--ink);
+    background:var(--white);
+    box-shadow:6px 6px 0 var(--navy);
+  }
+  .tb-top{
+    display:grid; grid-template-columns:1fr auto;
+    border-bottom:1.5px solid var(--ink);
+  }
+  .tb-main{padding:36px 32px;}
+  .tb-name{
+    font-family:var(--mono); font-weight:700;
+    font-size:clamp(32px, 5vw, 52px);
+    letter-spacing:-0.01em; line-height:1.05;
+    color:var(--navy);
+  }
+  .tb-role{
+    margin-top:10px; font-size:17px; font-weight:600; color:var(--ink-soft);
+  }
+  .tb-summary{margin-top:18px; max-width:560px; color:var(--ink-soft); font-size:14.5px;}
+  .tb-side{
+    border-left:1.5px solid var(--ink);
+    padding:24px 26px;
+    display:flex; flex-direction:column; justify-content:center; gap:12px;
+    min-width:230px; background:var(--paper);
+  }
+  .tb-side .field{font-family:var(--mono); font-size:12px;}
+  .tb-side .field .label{color:var(--amber-dark); text-transform:uppercase; letter-spacing:0.08em; font-size:10px; display:block; margin-bottom:2px;}
+  .tb-side .field a{border-bottom:1px dotted var(--ink-soft);}
+  .tb-side .field a:hover{color:var(--blue);}
+  .tb-bottom{
+    display:flex; flex-wrap:wrap; gap:0;
+  }
+  .tb-cell{
+    flex:1; min-width:140px;
+    padding:14px 20px;
+    border-right:1.5px solid var(--ink);
+    font-family:var(--mono);
+  }
+  .tb-cell:last-child{border-right:none;}
+  .tb-cell .num{font-size:22px; font-weight:700; color:var(--navy);}
+  .tb-cell .cap{font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-top:2px;}
+
+  section{padding:56px 0;}
+  .sheet-label{
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    display:flex; align-items:baseline; gap:14px; margin-bottom:30px;
+  }
+  .sheet-label .code{
+    background:var(--navy); color:var(--paper); padding:3px 9px;
+    font-weight:700; letter-spacing:0.04em;
+  }
+  .sheet-label .rule{flex:1; height:1px; background:var(--ink); opacity:0.35;}
+  h2.section-title{
+    font-family:var(--mono); font-weight:700; font-size:26px; color:var(--navy);
+    margin-bottom:6px;
+  }
+
+  /* EXPERIENCE */
+  .timeline{border-left:2px solid var(--navy); margin-left:8px; padding-left:32px; display:flex; flex-direction:column; gap:38px;}
+  .tl-item{position:relative;}
+  .tl-item::before{
+    content:""; position:absolute; left:-40px; top:4px;
+    width:14px; height:14px; background:var(--amber);
+    border:2px solid var(--navy); transform:rotate(45deg);
+  }
+  .tl-dates{font-family:var(--mono); font-size:12px; color:var(--amber-dark); letter-spacing:0.04em; margin-bottom:4px;}
+  .tl-role{font-size:19px; font-weight:700; color:var(--navy);}
+  .tl-org{font-size:14.5px; color:var(--ink-soft); margin-bottom:12px; font-weight:500;}
+  .tl-item ul{padding-left:18px; display:flex; flex-direction:column; gap:6px;}
+  .tl-item li{font-size:14.5px; color:var(--ink);}
+  .tl-item li::marker{color:var(--amber-dark);}
+
+  /* SKILLS — drawing legend */
+  .legend-frame{border:1.5px solid var(--ink); background:var(--white); box-shadow:5px 5px 0 var(--paper-line);}
+  .legend-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 22px; background:var(--navy); color:var(--paper);
+    font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.1em;
+  }
+  .skills-legend{display:grid; grid-template-columns:1fr 1fr;}
+  @media (max-width:680px){.skills-legend{grid-template-columns:1fr;}}
+  .legend-panel{padding:22px 26px 26px;}
+  .legend-panel:first-child{border-right:1.5px solid var(--ink);}
+  @media (max-width:680px){.legend-panel:first-child{border-right:none; border-bottom:1.5px solid var(--ink);}}
+  .legend-panel h3{font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--amber-dark); margin-bottom:14px;}
+  .legend-row{display:flex; align-items:center; gap:14px; padding:9px 0; border-bottom:1px dashed var(--paper-line);}
+  .legend-row:last-child{border-bottom:none;}
+  .legend-code{
+    font-family:var(--mono); font-size:10.5px; font-weight:700; color:var(--paper);
+    background:var(--navy); padding:3px 7px; flex-shrink:0; min-width:36px; text-align:center;
+  }
+  .legend-symbol{
+    width:22px; height:22px; border:1.5px solid var(--ink); flex-shrink:0; background:var(--white);
+  }
+  .legend-symbol.h1{background-image:repeating-linear-gradient(45deg, var(--blue), var(--blue) 2px, transparent 2px, transparent 6px);}
+  .legend-symbol.h2{background-image:repeating-linear-gradient(-45deg, var(--amber), var(--amber) 2px, transparent 2px, transparent 6px);}
+  .legend-symbol.h3{background-image:repeating-linear-gradient(90deg, var(--navy), var(--navy) 2px, transparent 2px, transparent 5px);}
+  .legend-symbol.h4{background-image: radial-gradient(circle at center, var(--blue) 2px, transparent 2px); background-size:8px 8px;}
+  .legend-name{font-size:14px; color:var(--ink);}
+
+  /* TOOLS */
+  .tools-row{display:flex; flex-wrap:wrap; gap:10px;}
+  .tool-tag{
+    font-family:var(--mono); font-size:12.5px;
+    border:1.5px solid var(--ink); background:var(--white);
+    padding:7px 14px; box-shadow:3px 3px 0 var(--paper-line);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .tool-tag:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--amber);}
+
+  /* ACHIEVEMENTS */
+  .stat-strip{
+    display:grid; grid-template-columns:repeat(4,1fr); border:1.5px solid var(--ink); background:var(--navy);
+  }
+  @media (max-width:800px){.stat-strip{grid-template-columns:repeat(2,1fr);}}
+  .stat{padding:26px 18px; border-right:1px solid rgba(244,241,232,0.25); color:var(--paper); text-align:center;}
+  .stat:last-child{border-right:none;}
+  .stat .n{font-family:var(--mono); font-size:26px; font-weight:700; color:var(--amber);}
+  .stat .d{font-size:12px; margin-top:6px; color:rgba(244,241,232,0.8);}
+
+  /* EDUCATION */
+  .edu-list{display:flex; flex-direction:column; gap:18px;}
+  .edu-item{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding:16px 20px; background:var(--white); border:1px solid var(--ink);
+    border-left:4px solid var(--amber);
+  }
+  .edu-item .deg{font-weight:700; font-size:15px;}
+  .edu-item .sch{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
+  .edu-item .score{font-family:var(--mono); font-size:13px; color:var(--navy); font-weight:700; white-space:nowrap;}
+
+  /* CONTACT / FOOTER */
+  .contact-block{
+    border:1.5px solid var(--ink); background:var(--navy); color:var(--paper);
+    padding:48px 40px; text-align:center; position:relative;
+  }
+  .contact-block h2{font-family:var(--mono); font-size:28px; margin-bottom:10px;}
+  .contact-block p{color:rgba(244,241,232,0.75); max-width:480px; margin:0 auto 26px;}
+  .contact-links{display:flex; justify-content:center; gap:16px; flex-wrap:wrap;}
+  .contact-links a{
+    font-family:var(--mono); font-size:13px; border:1.5px solid var(--amber); color:var(--amber);
+    padding:10px 20px; transition:all .2s ease;
+  }
+  .contact-links a:hover{background:var(--amber); color:var(--navy);}
+  footer{padding:26px 0; text-align:center; font-family:var(--mono); font-size:11px; color:var(--ink-soft);}
+
+  .fade-up{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .fade-up.visible{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="nav-mark">HAMMAD<span>_</span>YASIN.MEP</div>
+    <nav class="nav-links">
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="title-block">
+      <div class="tb-top">
+        <div class="tb-main">
+          <div class="eyebrow">Drawing No. HY-001 / MEP Estimator</div>
+          <div class="tb-name">Hammad Yasin</div>
+          <div class="tb-role">Lead Sales &amp; Estimation Engineer (MEP)</div>
+          <p class="tb-summary">MEP Estimator with 2+ years across HVAC and plumbing quantity takeoffs, cost estimation, and proposal development — skilled in vendor and subcontractor coordination, value engineering, and technical sales support to grow project pipelines.</p>
+        </div>
+        <div class="tb-side">
+          <div class="field"><span class="label">Location</span>Islamabad, Pakistan</div>
+          <div class="field"><span class="label">Email</span><a href="mailto:Hammad.yasin10@gmail.com">Hammad.yasin10@gmail.com</a></div>
+          <div class="field"><span class="label">LinkedIn</span><a href="https://linkedin.com/in/hammadyasin" target="_blank" rel="noopener">linkedin.com/in/hammadyasin</a></div>
+        </div>
+      </div>
+      <div class="tb-bottom">
+        <div class="tb-cell"><div class="num">300+</div><div class="cap">Projects Estimated</div></div>
+        <div class="tb-cell"><div class="num">$20M+</div><div class="cap">Largest MEP Scope</div></div>
+        <div class="tb-cell"><div class="num">20%</div><div class="cap">Win Ratio</div></div>
+        <div class="tb-cell"><div class="num">$10M</div><div class="cap">Awarded Work</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="fade-up">
+    <div class="sheet-label"><span class="code">A-01</span>Experience<div class="rule"></div></div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dates">April 2026 — Present</div>
+        <div class="tl-role">Lead Sales &amp; Estimation Engineer (MEP)</div>
+        <div class="tl-org">DAAD Global LLC · Riyadh, Saudi Arabia</div>
+        <ul>
+          <li>Prepare MEP estimates for tenders across KSA, ensuring accurate quantity takeoffs and competitive bid preparation.</li>
+          <li>Drive business development by identifying new project opportunities and managing pre-qualification submissions to strengthen market presence with leading contractors.</li>
+          <li>Coordinate supplier and subcontractor pricing to support competitive, client-focused bid proposals.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dates">Feb 2024 — March 2026</div>
+        <div class="tl-role">Planning / Estimation Engineer (MEP)</div>
+        <div class="tl-org">Value Engineering Pakistan (VE) · Islamabad</div>
+        <ul>
+          <li>Performed detailed HVAC and plumbing quantity takeoffs from construction drawings using Bluebeam.</li>
+          <li>Prepared accurate cost estimates and competitive bid proposals, including value engineering alternates.</li>
+          <li>Coordinated with vendors and subcontractors for pricing and quotations via Building Connected.</li>
+          <li>Reviewed project specifications to ensure compliance and identify cost-saving opportunities.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="fade-up">
+    <div class="sheet-label"><span class="code">A-02</span>Core Skills<div class="rule"></div></div>
+    <div class="legend-frame">
+      <div class="legend-head"><span>Drawing Legend</span><span>Sheet A-02</span></div>
+      <div class="skills-legend">
+        <div class="legend-panel">
+          <h3>Estimation &amp; Takeoffs</h3>
+          <div class="legend-row"><span class="legend-code">SK-01</span><span class="legend-symbol h1"></span><span class="legend-name">Heat Load Calculations</span></div>
+          <div class="legend-row"><span class="legend-code">SK-02</span><span class="legend-symbol h2"></span><span class="legend-name">HVAC Quantity Takeoffs</span></div>
+          <div class="legend-row"><span class="legend-code">SK-03</span><span class="legend-symbol h3"></span><span class="legend-name">Plumbing Quantity Takeoffs</span></div>
+          <div class="legend-row"><span class="legend-code">SK-04</span><span class="legend-symbol h4"></span><span class="legend-name">Cost Estimation</span></div>
+          <div class="legend-row"><span class="legend-code">SK-05</span><span class="legend-symbol h1"></span><span class="legend-name">Value Engineering</span></div>
+        </div>
+        <div class="legend-panel">
+          <h3>Sales &amp; Coordination</h3>
+          <div class="legend-row"><span class="legend-code">SK-06</span><span class="legend-symbol h2"></span><span class="legend-name">Bid Proposal Development</span></div>
+          <div class="legend-row"><span class="legend-code">SK-07</span><span class="legend-symbol h3"></span><span class="legend-name">Vendor Coordination</span></div>
+          <div class="legend-row"><span class="legend-code">SK-08</span><span class="legend-symbol h1"></span><span class="legend-name">Bid Leveling</span></div>
+          <div class="legend-row"><span class="legend-code">SK-09</span><span class="legend-symbol h2"></span><span class="legend-name">Project Hunting</span></div>
+          <div class="legend-row"><span class="legend-code">SK-10</span><span class="legend-symbol h3"></span><span class="legend-name">Lead Generation</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools" class="fade-up">
+    <div class="sheet-label"><span class="code">A-03</span>Tools &amp; Software<div class="rule"></div></div>
+    <div class="tools-row">
+      <span class="tool-tag">MS Excel</span>
+      <span class="tool-tag">MS Word</span>
+      <span class="tool-tag">MS PowerPoint</span>
+      <span class="tool-tag">Bluebeam Revu</span>
+      <span class="tool-tag">AutoCAD</span>
+      <span class="tool-tag">Building Connected</span>
+      <span class="tool-tag">Etimad Portal (KSA)</span>
+      <span class="tool-tag">Forsah Portal (KSA)</span>
+      <span class="tool-tag">HubSpot</span>
+    </div>
+  </section>
+
+  <section id="achievements" class="fade-up">
+    <div class="sheet-label"><span class="code">A-04</span>Key Achievements<div class="rule"></div></div>
+    <div class="stat-strip">
+      <div class="stat"><div class="n">300+</div><div class="d">MEP estimates completed across residential, commercial, healthcare, educational, offices &amp; chilled water systems</div></div>
+      <div class="stat"><div class="n">$20M+</div><div class="d">Delivered estimates for large-scale projects exceeding this MEP scope</div></div>
+      <div class="stat"><div class="n">20%</div><div class="d">Win ratio, contributing ~$10M in awarded work for client</div></div>
+      <div class="stat"><div class="n">6 States</div><div class="d">Supported clients across FL, GA, NC, SC, TN &amp; NJ</div></div>
+    </div>
+  </section>
+
+  <section id="education" class="fade-up">
+    <div class="sheet-label"><span class="code">A-05</span>Education<div class="rule"></div></div>
+    <div class="edu-list">
+      <div class="edu-item">
+        <div>
+          <div class="deg">B.Sc. Civil Engineering</div>
+          <div class="sch">Mirpur University of Science &amp; Technology (MUST), Mirpur AJK · 2023</div>
+        </div>
+        <div class="score">CGPA 3.4</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="deg">F.Sc. Pre-Engineering</div>
+          <div class="sch">Faran Model College of Sciences, BISE Mirpur · 2019</div>
+        </div>
+        <div class="score">80.3%</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="deg">Matriculation (Science)</div>
+          <div class="sch">Faran Model College of Sciences, BISE Mirpur · 2017</div>
+        </div>
+        <div class="score">88.6%</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="fade-up" style="padding-bottom:20px;">
+    <div class="sheet-label"><span class="code">A-06</span>Contact<div class="rule"></div></div>
+    <div class="contact-block">
+      <h2>Let's talk numbers.</h2>
+      <p>Open to MEP estimation, HVAC/plumbing takeoff, and business development opportunities across the USA, Saudi Arabia, Pakistan, and beyond.</p>
+      <div class="contact-links">
+        <a href="mailto:Hammad.yasin10@gmail.com">Email Me</a>
+        <a href="https://linkedin.com/in/hammadyasin" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 Hammad Yasin — Drawn to scale. Built for the field.</footer>
+
+<script>
+  const els = document.querySelectorAll('.fade-up');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  els.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
